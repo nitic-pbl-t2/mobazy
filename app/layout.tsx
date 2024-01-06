@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { FC, ReactNode } from "react";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
+import { Header } from "@/components/Header/Header";
+import { Footer } from "@/components/Footer/Footer";
 
 type RootLayoutProps = {
   children: ReactNode;
@@ -12,8 +12,9 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="jp">
       <head />
-      <body>
+      <body className={`flex min-h-screen flex-col`}>
         <Header />
+        {/* header, footer を残して100パーセント画面を占有する */}
         <main className="min-h-full grow">{children}</main>
         <Footer />
       </body>
