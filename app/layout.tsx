@@ -4,6 +4,7 @@ import "./globals.css";
 import { FC, ReactNode } from "react";
 import { Header } from "@/components/Header/Header";
 import { Footer } from "@/components/Footer/Footer";
+import { Toaster } from "@/components/ui/toaster";
 
 type RootLayoutProps = {
   children: ReactNode;
@@ -17,6 +18,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
         {/* header, footer を残して100パーセント画面を占有する */}
         <main className="min-h-full grow">{children}</main>
         <Footer />
+        <Toaster />
       </body>
     </html>
   );

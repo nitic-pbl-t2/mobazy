@@ -22,7 +22,7 @@ export const Header: FC<HeaderProps> = (props) => {
             desktop: "20vw",
           }}
           // placeholder="blur"
-          className="w-full"
+          className="w-full p-3 hover:"
         />
       </Link>
       <NavLinks />

@@ -9,13 +9,9 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/components/Link/Link";
-
-const containerStyle = {
-  height: "90vh",
-  width: "100%",
-  borderRadius: "rounded",
-};
+import { Image } from "@/components/Image/Image";
+import NiticLogo from "@/public/logo/nitic.png";
+import Confirm from "@/components/Confirm/Confirm";
 
 // 高専にしかステーションが存在しないので、静的に設定してます
 const stationNiticStatus: stationStatusType = {
@@ -29,11 +25,9 @@ const locationNitic = {
   lng: 140.550973405102,
 };
 
-//
+//  静的データはここまで
 
 type stationStatusType = {
-  //   lat: number;
-  //   lng: number;
   name: string;
   availableBatteries: number;
   Ports: number;
@@ -57,8 +51,8 @@ export const MapPage: FC = () => {
   };
 
   return (
-    <div>
-      {isLoaded ? (
+    <>
+      {isLoaded && (
         <>
           <GoogleMap
             mapContainerStyle={{
@@ -75,40 +69,38 @@ export const MapPage: FC = () => {
                 markerClicked();
               }}
             />
-            {/* {selectedMarker &&
-                  selectedMarker.lat === marker.lat &&
-                  selectedMarker.lng === marker.lng && (
-                    <InfoWindow position={marker}>
-                      <p className="text-black font-bold text-center">
-                        {marker.availableBattery}/{marker.maxBattery}
-                      </p>
-                    </InfoWindow>
-                  )} */}
+            {stationStatus && (
+              <InfoWindow position={locationNitic}>
+                <Image src={NiticLogo} alt={"Niticのロゴ"} />
+              </InfoWindow>
+            )}
           </GoogleMap>
 
-          {stationStatus ? (
-            <>
-              <div className="flex justify-center items-center mx-10 px-10 py-2 bg-slate-100">
-                <div className="flex flex-row  items-center justify-between gap-6">
+          <div className="flex justify-center items-center p-3 text-lg font-bold ">
+            {stationStatus ? (
+              <>
+                <div className="flex flex-row  items-center justify-between gap-3 p-3 w-[400px] rounded-md bg-slate-200">
                   <h1>{stationStatus.name}</h1>
-                  <h2>{stationStatus.availableBatteries}</h2>
-                  <h2>{stationStatus.Ports}</h2>
-                  <Button>借りる</Button>
+                  <h2>
+                    {stationStatus.availableBatteries} / {stationStatus.Ports}
+                  </h2>
+                  <Confirm />
                 </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <h1 className="text-lg font-bold p-3">
-                ピンをタップして選択してください
-              </h1>
-              {/* <SkeletonBattery /> */}
-            </>
-          )}
+              </>
+            ) : (
+              <>
+                <div className="flex flex-row  items-center justify-between gap-6 p-3 w-[400px] rounded-md bg-slate-200">
+                  <h1>ステーション</h1>
+                  <h2>利用可能 / ポート数</h2>
+                  <div className="h-10 px-4 py-2 opacity-75 bg-primary text-primary-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                    借りる
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </>
-      ) : (
-        <></>
       )}
-    </div>
+    </>
   );
 };
