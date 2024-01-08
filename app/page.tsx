@@ -16,7 +16,7 @@ const Home: FC = () => {
         />
         <h1 className="my-6 text-center sm:text-2xl leading-normal lg:text-3xl">
           <span className="text-2xl font-bold">
-            "いつでもどこでも気軽にバッテリーを借りよう！"
+            いつでもどこでも気軽にバッテリーを借りよう！
           </span>
         </h1>
         <section className="flex flex-col gap-1">
