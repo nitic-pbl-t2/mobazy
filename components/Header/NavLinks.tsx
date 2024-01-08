@@ -3,7 +3,6 @@
 import type { FC } from "react";
 import { useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
-import { Link } from "@/components/Link/Link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -15,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/Provider/AuthProvider";
+import Link from "next/link";
 
 export const NavLinks: FC = () => {
   //   const user = useUser();
