@@ -6,7 +6,6 @@ import { Header } from "@/components/Header/Header";
 import { Footer } from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/Provider/AuthProvider";
-import { UserProvider } from "@/Provider/UserProvider";
 
 type RootLayoutProps = {
   children: ReactNode;
@@ -16,15 +15,13 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
     <html lang="jp">
       <head />
       <AuthProvider>
-        <UserProvider>
-          <body className={`flex min-h-screen flex-col`}>
-            <Header />
-            {/* header, footer を残して100パーセント画面を占有する */}
-            <main className="min-h-full grow">{children}</main>
-            <Footer />
-            <Toaster />
-          </body>
-        </UserProvider>
+        <body className={`flex min-h-screen flex-col`}>
+          <Header />
+          {/* header, footer を残して100パーセント画面を占有する */}
+          <main className="min-h-full grow">{children}</main>
+          <Footer />
+          <Toaster />
+        </body>
       </AuthProvider>
     </html>
   );
