@@ -1,6 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
-import { GoogleMapStyle } from "./GoogleMapStyle";
+import React, { FC, useEffect, useState } from "react";
 import {
   GoogleMap,
   LoadScript,
@@ -14,21 +13,14 @@ import NiticLogo from "@/public/logo/nitic.png";
 import Confirm from "@/components/Confirm/Confirm";
 import { useAuth } from "@/Provider/AuthProvider";
 
-// 高専にしかステーションが存在しないので、静的に設定してます
-const stationNiticStatus: stationStatusType = {
-  name: "茨城高専",
-  availableBatteries: 1,
-  Ports: 3,
-};
-
+// 場所は現在位置を取得するとブラウザに許可を求めなきゃいけないので、高専で固定
 const locationNitic = {
   lat: 36.39963661269642,
   lng: 140.550973405102,
 };
-
-const isBorrowing: boolean = true;
-
 //  静的データはここまで
+
+// useUserからユーザーの状態をグローバルに取得
 
 type stationStatusType = {
   name: string;
@@ -38,20 +30,38 @@ type stationStatusType = {
 
 export const MapPage: FC = () => {
   const [stationStatus, setStationStatus] = useState<stationStatusType>(null);
-  const { user, login } = useAuth();
+  const [isBorrowing, setIsBorrowing] = useState<boolean | null>(null);
+  const { user } = useAuth();
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDoa9ibpkzYfw3Gl5mAKPFYDvN64fxhw58",
-    // libraries: ["geometry", "drawing"],
   });
 
-  const fetchStationStatus = () => {
-    return stationNiticStatus;
+  const fetchStationStatus = async () => {
+    // /api/statusを叩く　高専ステーションの状態を取得
+    return {
+      name: "茨城高専",
+      availableBatteries: 1,
+      Ports: 3,
+    };
   };
 
-  const markerClicked = () => {
-    setStationStatus(fetchStationStatus());
+  useEffect(() => {
+    const fetchIsBorrowing = async () => {
+      if (user) {
+        const response = await fetch(`/api/user/${user.email}/isBorrowing`);
+        const jsonData = await response.json();
+        setIsBorrowing(jsonData.isBorrowing);
+        console.log("対象のユーザは現在、貸出中？: ", jsonData.isBorrowing);
+      }
+    };
+
+    fetchIsBorrowing();
+  }, [user]);
+
+  const markerClicked = async () => {
+    setStationStatus(await fetchStationStatus());
   };
 
   return (

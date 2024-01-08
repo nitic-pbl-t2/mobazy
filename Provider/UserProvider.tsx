@@ -9,9 +9,7 @@ import {
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 type UserContextType = {
-  isBatteryBorrowed: boolean;
-  borrowedAt: Date | null;
-  fetchUserData: () => void;
+  // isBorrowing: boolean;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -22,33 +20,14 @@ type UserProviderProps = {
 
 export function UserProvider({ children }: UserProviderProps) {
   const supabase = createClientComponentClient();
-  const [isBatteryBorrowed, setIsBatteryBorrowed] = useState<boolean>(false);
-  const [borrowedAt, setBorrowedAt] = useState<Date | null>(null);
+  const [isBorrowing, setIsBorrowing] = useState<Boolean>(false);
 
-  const fetchUserData = async () => {
-    const { data: userData, error } = await supabase.auth.getUser();
-
-    if (userData.user) {
-      const res = await fetch("/api/getUserdata/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ gmail: userData.user.email }),
-      });
-      if (res && res.ok) {
-        const data = await res.json();
-        console.log(data);
-        setIsBatteryBorrowed(data.isBatteryBorrowed);
-        setBorrowedAt(data.borrowedAt);
-      }
-    }
+  const fetchIsBorrowing = async () => {
+    // const response = await fetch(`/api/user/${email}/`)
   };
 
   return (
-    <UserContext.Provider
-      value={{ borrowedAt, isBatteryBorrowed, fetchUserData }}
-    >
+    <UserContext.Provider value={{ isBorrowing }}>
       {children}
     </UserContext.Provider>
   );

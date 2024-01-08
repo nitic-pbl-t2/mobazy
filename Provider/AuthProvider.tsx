@@ -24,6 +24,7 @@ type AuthContextType = {
   login: () => void;
   logout: () => void;
   fetchUser: () => void;
+  isLogged: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,7 +37,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const supabase = createClientComponentClient();
   const [user, setUser] = useState<User | null>(null);
   // const redirectUrl = getURL();
-  const [isLogged, setIsLogged] = useState<boolean | undefined>(undefined);
+  const [isLogged, setIsLogged] = useState<boolean>(false);
 
   const login = async () => {
     console.log("ログイン処理を開始します...");
@@ -64,7 +65,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const fetchUser = async () => {
-    // const isLogged: boolean = data.session !== null;
     const { data, error } = await supabase.auth.getSession();
     const isLogged: boolean = data.session !== null;
     setIsLogged(data.session !== null);
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, fetchUser }}>
+    <AuthContext.Provider value={{ user, login, logout, fetchUser, isLogged }}>
       {children}
     </AuthContext.Provider>
   );

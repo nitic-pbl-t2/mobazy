@@ -1,9 +1,7 @@
-// import { PrismaClient } from "@prisma/client";
+// import { prismaClient } from "@/utils/prisma/client";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
-
-import type { NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   console.log("ログイン処理中");
@@ -19,30 +17,31 @@ export async function GET(request: NextRequest) {
     });
     await supabase.auth.exchangeCodeForSession(code);
 
-    // ログインしたので、リダイレクトする前にgmailを取得->データベースになかったらUserテーブルにデータを新規作成
+    console.log("ログイン処理終了");
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    // const {
+    //   data: { user },
+    // } = await supabase.auth.getUser();
 
     // if (user) {
     //   console.log(user.email);
-    //   const prisma = new PrismaClient();
-    //   const existingUser = await prisma.user.findUnique({
+    //   const existingUser = await prismaClient.userHistory.findUnique({
     //     where: {
-    //       gmail: user.email,
+    //       email: user.email, // ログインしたユーザ
     //     },
     //   });
 
-    //   if (!existingUser) {
-    //     await prisma.user.create({
+    //   // userHistoryテーブルにユーザが存在しない -> ログインしたことない
+    //   if (!existingUser && user.email) {
+    //     await prismaClient.userHistory.create({
     //       data: {
-    //         gmail: user.email!,
-    //         isBatteryBorrowed: false,
+    //         email: user.email,
     //       },
     //     });
 
-    //     console.log(`新しいユーザーが作成されました: ${user.email}`);
+    //     console.log(
+    //       `初回ログインなので、userHistoryテーブルに追加: ${user.email}`
+    //     );
     //   } else {
     //     console.log(`既存のユーザーです: ${user.email}`);
     //   }
