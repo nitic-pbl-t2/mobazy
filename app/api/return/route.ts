@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest, response: NextResponse) {
   const jsonData = await request.json();
-  console.log("borrow", jsonData);
+  console.log("return", jsonData);
 
   const correctPasscode = 99;
 
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     // return new NextResponse({ status: 200 });
     return NextResponse.json({
       status: 200,
-      message: "正しいワンタイムパスコードが確認され、貸出処理が終了しました。",
+      message: "正しいワンタイムパスコードが確認され、返却処理が終了しました。",
     });
   }
 }

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Image } from "@/components/Image/Image";
 import NiticLogo from "@/public/logo/nitic.png";
 import Confirm from "@/components/Confirm/Confirm";
+import { useAuth } from "@/Provider/AuthProvider";
 
 // 高専にしかステーションが存在しないので、静的に設定してます
 const stationNiticStatus: stationStatusType = {
@@ -25,6 +26,8 @@ const locationNitic = {
   lng: 140.550973405102,
 };
 
+const isBorrowing: boolean = true;
+
 //  静的データはここまで
 
 type stationStatusType = {
@@ -35,6 +38,7 @@ type stationStatusType = {
 
 export const MapPage: FC = () => {
   const [stationStatus, setStationStatus] = useState<stationStatusType>(null);
+  const { user, login } = useAuth();
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -75,30 +79,62 @@ export const MapPage: FC = () => {
               </InfoWindow>
             )}
           </GoogleMap>
-
-          <div className="flex justify-center items-center p-3 text-lg font-bold ">
-            {stationStatus ? (
-              <>
-                <div className="flex flex-row  items-center justify-between gap-3 p-3 w-[400px] rounded-md bg-slate-200">
-                  <h1>{stationStatus.name}</h1>
-                  <h2>
-                    {stationStatus.availableBatteries} / {stationStatus.Ports}
-                  </h2>
-                  <Confirm />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex flex-row  items-center justify-between gap-6 p-3 w-[400px] rounded-md bg-slate-200">
-                  <h1>ステーション</h1>
-                  <h2>利用可能 / ポート数</h2>
-                  <div className="h-10 px-4 py-2 opacity-75 bg-primary text-primary-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
-                    借りる
+          {user ? (
+            <div className="flex justify-center items-center p-3 text-lg font-bold ">
+              {/* 貸出 */}
+              {stationStatus && !isBorrowing && (
+                <>
+                  <div className="flex flex-row  items-center justify-between gap-3 p-3 w-[400px] rounded-md bg-slate-200">
+                    <h1>{stationStatus.name}</h1>
+                    <h2>
+                      {stationStatus.availableBatteries} / {stationStatus.Ports}
+                    </h2>
+                    <Confirm option="borrow" />
                   </div>
-                </div>
-              </>
-            )}
-          </div>
+                </>
+              )}
+              {!stationStatus && !isBorrowing && (
+                <>
+                  <div className="flex flex-row  items-center justify-between gap-6 p-3 w-[400px] rounded-md bg-slate-200">
+                    <h1>ステーション</h1>
+                    <h2>利用可能 / ポート数</h2>
+                    <div className="h-10 px-4 py-2 opacity-75 bg-primary text-primary-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                      借りる
+                    </div>
+                  </div>
+                </>
+              )}
+              {/* 返却 */}
+              {stationStatus && isBorrowing && (
+                <>
+                  <div className="flex flex-row  items-center justify-between gap-3 p-3 w-[400px] rounded-md bg-slate-200">
+                    <h1>{stationStatus.name}</h1>
+                    <h2>
+                      {stationStatus.availableBatteries} / {stationStatus.Ports}
+                    </h2>
+                    <Confirm option="return" />
+                  </div>
+                </>
+              )}
+              {!stationStatus && isBorrowing && (
+                <>
+                  <div className="flex flex-row  items-center justify-between gap-6 p-3 w-[400px] rounded-md bg-slate-200">
+                    <h1>ステーション</h1>
+                    <h2>返却可能 / ポート数</h2>
+                    <div className="h-10 px-4 py-2 opacity-75 bg-primary text-primary-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                      返す
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center p-3 text-lg font-bold ">
+              <div className="flex flex-row  items-center justify-center p-3 w-[400px] rounded-md bg-slate-200">
+                ログインをしてください
+              </div>
+            </div>
+          )}
         </>
       )}
     </>

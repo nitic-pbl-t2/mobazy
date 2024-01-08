@@ -1,7 +1,7 @@
 "use client";
 
 import type { FC } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { Link } from "@/components/Link/Link";
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/Provider/AuthProvider";
 
 export const NavLinks: FC = () => {
   //   const user = useUser();
-  //   const hasUserLoggedIn = useMemo(() => user?.isSignedIn, [user]);
+  const { user, login, logout, fetchUser } = useAuth();
+  // const user = useMemo(() => user, [user]);
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   const pathname = usePathname();
-  const hasUserLoggedIn = true;
-  const hasUserBorrowing = false;
+  const hasUserBorrowing = true;
   return (
     <ul className="flex shrink grow flex-row items-center justify-between truncate">
       <li className="inline-flex shrink truncate gap-4">
@@ -46,7 +52,7 @@ export const NavLinks: FC = () => {
           </>
         )}
 
-        {hasUserLoggedIn && hasUserBorrowing && pathname == "/status" && (
+        {user && hasUserBorrowing && pathname == "/status" && (
           <>
             <Link
               title="ステータス"
@@ -57,7 +63,7 @@ export const NavLinks: FC = () => {
             </Link>
           </>
         )}
-        {hasUserLoggedIn && hasUserBorrowing && !(pathname == "/status") && (
+        {user && hasUserBorrowing && !(pathname == "/status") && (
           <>
             <Link
               title="ステータス"
@@ -69,31 +75,25 @@ export const NavLinks: FC = () => {
           </>
         )}
       </li>
-      {hasUserLoggedIn ? (
+      {user ? (
         <>
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  className="mr-2"
-                />
+                <AvatarImage src={user?.user_metadata["picture"]} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>inoueyt113@gmail.com</DropdownMenuLabel>
+              <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>ご利用履歴</DropdownMenuItem>
-              <DropdownMenuItem>ログアウト</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>ログアウト</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </>
       ) : (
         <>
-          <Button asChild>
-            <Link href="/login">Login</Link>
-          </Button>
+          <Button onClick={login}>ログイン</Button>
         </>
       )}
     </ul>

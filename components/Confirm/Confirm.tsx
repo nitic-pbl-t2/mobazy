@@ -8,20 +8,32 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import BorrowForm from "@/components/BorrowForm/BorrowForm";
+import RequestForm from "@/components/RequestForm/RequestForm";
 
-const Confirm: FC = () => {
+type ConfirmProps = {
+  option: "borrow" | "return";
+};
+
+const Confirm: FC<ConfirmProps> = ({ option }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>借りる</Button>
+        {option == "borrow" ? <Button>借りる</Button> : <Button>返す</Button>}
       </DialogTrigger>
       <DialogContent className="flex flex-col justify-center items-center">
         <DialogHeader>
-          <DialogTitle>本当にバッテリーを借りますか？</DialogTitle>
+          {option == "borrow" ? (
+            <DialogTitle>本当にバッテリーを借りますか？</DialogTitle>
+          ) : (
+            <DialogTitle>本当にバッテリーを返しますか？</DialogTitle>
+          )}
         </DialogHeader>
         {/* form は長いのでコンポーネント化する */}
-        <BorrowForm />
+        {option == "borrow" ? (
+          <RequestForm option={"borrow"} />
+        ) : (
+          <RequestForm option={"return"} />
+        )}
       </DialogContent>
     </Dialog>
   );

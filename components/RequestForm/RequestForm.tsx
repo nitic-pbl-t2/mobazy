@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/Provider/AuthProvider";
 
 const FormSchema = z.object({
   email: z.string(),
@@ -25,17 +26,18 @@ const FormSchema = z.object({
   }),
 });
 
-type messegeType = {
-  message: string;
-} | null;
+type requestFormProps = {
+  option: "borrow" | "return";
+};
 
-const BorrowForm: FC = () => {
+const RequestForm: FC<requestFormProps> = ({ option }) => {
   const router = useRouter();
 
-  const [message, setMessage] = useState<messageType>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [textColor, setTextColor] = useState<string>("");
 
-  const email = "inoueyt113@gmail.com";
+  const { user } = useAuth();
+  const email = user?.email;
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -47,7 +49,7 @@ const BorrowForm: FC = () => {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: "以下の内容で貸出申請を送信しました！",
+      title: `/api/${option}  | POST`,
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -55,7 +57,7 @@ const BorrowForm: FC = () => {
       ),
     });
 
-    const res = await fetch("/api/borrow", {
+    const res = await fetch("/api/" + option, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +75,7 @@ const BorrowForm: FC = () => {
       } else {
         setTextColor("text-green-400");
         // メッセージを読ませるため、3秒待機しページ遷移
-        new Promise((resolve) => {
+        new Promise<void>((resolve) => {
           setTimeout(() => {
             router.push("/status"); // ページ遷移
             resolve();
@@ -82,21 +84,14 @@ const BorrowForm: FC = () => {
       }
       console.log(jsonData.status, jsonData.message);
     } else {
-      console.log(
-        "エラー: 貸出申請をしたものの、サーバーから返答が返ってこない。"
-      );
+      console.log("エラー: サーバーから返答が返ってこない。");
       return null;
     }
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-2/3 space-y-6"
-        action="http://localhost:3000/api/borrow"
-        method="POST"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
         <div className="hidden">
           <FormField
             control={form.control}
@@ -107,9 +102,7 @@ const BorrowForm: FC = () => {
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
-                <FormDescription>
-                  ステーションのディスプレイ上に表示されている2桁のパスコードを入力してください。
-                </FormDescription>
+                <FormDescription></FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -132,10 +125,14 @@ const BorrowForm: FC = () => {
           )}
         />
         {message && <div className={textColor + " font-bold"}>{message}</div>}
-        <Button type="submit">借りる</Button>
+        {option == "borrow" ? (
+          <Button type="submit">借りる</Button>
+        ) : (
+          <Button type="submit">返す</Button>
+        )}
       </form>
     </Form>
   );
 };
 
-export default BorrowForm;
+export default RequestForm;

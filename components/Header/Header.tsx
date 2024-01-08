@@ -2,7 +2,7 @@ import React, { ComponentPropsWithoutRef, FC } from "react";
 import { Image } from "@/components/Image/Image";
 import Link from "next/link";
 import LogoImage from "@/public/logo/mobazy-home.svg";
-import { NavLinks } from "@/components/NavLinks/NavLinks";
+import { NavLinks } from "@/components/Header/NavLinks";
 
 type HeaderProps = ComponentPropsWithoutRef<"header">;
 
