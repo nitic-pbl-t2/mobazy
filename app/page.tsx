@@ -16,12 +16,12 @@ const Home: FC = () => {
         />
         <h1 className="my-6 text-center sm:text-2xl leading-normal lg:text-3xl">
           <span className="text-2xl font-bold">
-            いつでもどこでも気軽にバッテリーを借りよう！
+            &quot;いつでもどこでも気軽にバッテリーを借りよう！&quot;
           </span>
         </h1>
         <section className="flex flex-col gap-1">
           <p>
-            Mobazyは、"いつでもどこでも気軽に、バッテリーを借りる"
+            Mobazyは、&quot;いつでもどこでも気軽に、バッテリーを借りる&quot;
             ことを目的としたモバイルバッテリーの貸し出しサービスです。
             この専用ウェブサイトから以下の機能を提供しています。
           </p>
