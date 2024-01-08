@@ -47,6 +47,7 @@ const Home: FC = () => {
           <div className="flex justify-center italic gap-10 mb-2">
             <span>🔋バッテリー: USB-A出力, 2500mAh</span>
             <span>⏰返却期限: 48時間以内</span>
+            <span>👦利用台数: 1人同時に一台まで</span>
           </div>
           <p>
             残念ながら技術的な問題で、USB-A出力のバッテリーしか用意できていません。

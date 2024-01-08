@@ -12,8 +12,7 @@ datasource db {
 
 
 model StationStatus{
-  id Int @id @default(autoincrement()) // idで一意に特定できないといけないっぽい
-  name String    @default("茨城高専")
+  name String  @id  @default("nitic")
   availableBatteries Int @default(3)
   Ports Int?
 }
@@ -26,10 +25,15 @@ model UserHistory {
   port  Int?
   borrowedAt DateTime? @default(now())
   returnedAt DateTime? 
-  usageTime  Int? 
+  usageTime  String? 
 }
 
 model User{
   email String @id
   isBorrowing Boolean 
+}
+
+model Passcode{
+  secretKey String @id
+  passcode Int
 }

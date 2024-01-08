@@ -34,7 +34,7 @@ export const Footer: FC<FooterProps> = (props) => {
           <ul className="flex flex-col gap-3 py-3 font-bold hover:opacity-80">
             <Link
               external
-              href={new URL("https://github.com/nitic-pbl-p4").href}
+              href={new URL("https://github.com/Inoueyt113/Mobazy").href}
               target="_blank"
               rel="noopener noreferrer "
             >

@@ -20,8 +20,6 @@ const locationNitic = {
 };
 //  静的データはここまで
 
-// useUserからユーザーの状態をグローバルに取得
-
 type stationStatusType = {
   name: string;
   availableBatteries: number;
@@ -40,11 +38,12 @@ export const MapPage: FC = () => {
 
   const fetchStationStatus = async () => {
     // /api/statusを叩く　高専ステーションの状態を取得
-    return {
-      name: "茨城高専",
-      availableBatteries: 1,
-      Ports: 3,
-    };
+    const response = await fetch("/api/station/status");
+    if (response.ok) {
+      const jsonStatus = await response.json();
+      console.log(jsonStatus.stationStatus);
+      return jsonStatus.stationStatus;
+    }
   };
 
   useEffect(() => {
@@ -120,7 +119,8 @@ export const MapPage: FC = () => {
                   <div className="flex flex-row  items-center justify-between gap-3 p-3 w-[400px] rounded-md bg-slate-200">
                     <h1>{stationStatus.name}</h1>
                     <h2>
-                      {stationStatus.availableBatteries} / {stationStatus.Ports}
+                      {stationStatus.Ports - stationStatus.availableBatteries} /{" "}
+                      {stationStatus.Ports}
                     </h2>
                     <Confirm option="return" />
                   </div>

@@ -14,9 +14,21 @@ import { FC, useEffect, useState } from "react";
 //   usageTime: "120",
 // };
 
+const convertToDisplayFormat = (userHistories: Payment[]): Payment[] => {
+  return userHistories.map((history) => ({
+    ...history,
+    status: history.status === "borrowing" ? "貸出中" : "返却済",
+    borrowedAt: new Date(history.borrowedAt).toLocaleString(),
+    returnedAt:
+      history.returnedAt !== null
+        ? new Date(history.returnedAt).toLocaleString()
+        : "",
+  }));
+};
+
 const Status: FC = () => {
   const [userHistories, setUserHistories] = useState<Payment[]>([]);
-  const { user, isLogged, fetchUser } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -37,7 +49,10 @@ const Status: FC = () => {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={userHistories} />
+      <DataTable
+        columns={columns}
+        data={convertToDisplayFormat(userHistories)}
+      />
     </div>
   );
 };

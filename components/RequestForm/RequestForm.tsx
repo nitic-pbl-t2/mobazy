@@ -115,10 +115,10 @@ const RequestForm: FC<requestFormProps> = ({ option }) => {
             <FormItem>
               <FormLabel>Passcode</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="••••" />
+                <Input {...field} placeholder="•••••" />
               </FormControl>
               <FormDescription>
-                ステーションのディスプレイ上に表示されている2桁のパスコードを入力してください。
+                ステーションのディスプレイ上に表示されている5桁のパスコードを半角数字で入力してください。
               </FormDescription>
               <FormMessage />
             </FormItem>
