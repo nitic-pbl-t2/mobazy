@@ -10,16 +10,22 @@ function generateRandomNumber(): number {
 export async function GET(request: Request) {
   const newPasscode = generateRandomNumber();
 
-  // newPasscodeをsecretKeyが1の行のpasscodeに挿入
-  await prismaClient.passcode.update({
-    where: { secretKey: "1" },
-    data: { passcode: newPasscode },
-  });
+  if (newPasscode) {
+    // newPasscodeをsecretKeyが1の行のpasscodeに挿入
+    await prismaClient.passcode.update({
+      where: { secretKey: "1" },
+      data: { passcode: newPasscode },
+    });
 
-  console.log("新しいパスコード ", newPasscode);
+    console.log("新しいパスコード ", newPasscode);
 
-  return NextResponse.json({
-    message: "ワンタイムパスワードの更新終了",
-    passcode: newPasscode,
-  });
+    return NextResponse.json({
+      message: "ワンタイムパスワードの更新終了",
+      passcode: newPasscode,
+    });
+  } else {
+    return NextResponse.json({
+      message: "ワンタイムパスワードの更新ができませんでした。",
+    });
+  }
 }
