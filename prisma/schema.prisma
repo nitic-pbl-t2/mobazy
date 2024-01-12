@@ -11,12 +11,14 @@ datasource db {
 }
 
 
+// ステーションの情報を追加できる
 model StationStatus{
   name String  @id  @default("nitic")
   availableBatteries Int @default(3)
   Ports Int?
 }
 
+// 利用履歴画面で使う
 model UserHistory {
   id  Int @id @default(autoincrement())
   email String 
@@ -28,6 +30,7 @@ model UserHistory {
   usageTime  String? 
 }
 
+// プロフィール情報を追加できる
 model User{
   email String @id
   isBorrowing Boolean 
