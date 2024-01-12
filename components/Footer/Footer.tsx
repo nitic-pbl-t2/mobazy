@@ -1,8 +1,8 @@
 import React, { ComponentPropsWithoutRef, FC } from "react";
 import { Image } from "@/components/Image/Image";
-import { Link } from "@/components/Link/Link";
 import { RxGithubLogo } from "react-icons/rx";
 import NiticLogoImage from "@/public/logo/nitic-3.png";
+import Link from "next/link";
 
 type FooterProps = ComponentPropsWithoutRef<"footer">;
 
@@ -14,7 +14,6 @@ export const Footer: FC<FooterProps> = (props) => {
     >
       <div className="flex flex-row justify-start items-center gap-4 mt-6 max-w-sm">
         <Link
-          external
           href={new URL("https://www.ibaraki-ct.ac.jp/").href}
           target="_blank"
           rel="noopener noreferrer"
@@ -33,7 +32,6 @@ export const Footer: FC<FooterProps> = (props) => {
         <div>
           <ul className="flex flex-col gap-3 py-3 font-bold hover:opacity-80">
             <Link
-              external
               href={new URL("https://github.com/Inoueyt113/Mobazy").href}
               target="_blank"
               rel="noopener noreferrer "

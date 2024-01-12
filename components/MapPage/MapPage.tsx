@@ -37,7 +37,7 @@ export const MapPage: FC = () => {
   });
 
   const fetchStationStatus = async () => {
-    // /api/statusを叩く　高専ステーションの状態を取得
+    // /api/station/statusを叩く　高専ステーションの状態を取得
     const response = await fetch("/api/station/status");
     if (response.ok) {
       const jsonStatus = await response.json();
