@@ -3,7 +3,7 @@ import { prismaClient } from "@/utils/prisma/client";
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const jsonData = await request.json();
-  console.log("borrow", jsonData);
+  // console.log("borrow", jsonData);
 
   //passcode をデータベースから取得
   const passcodeData = await prismaClient.passcode.findUnique({
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
       select: { availableBatteries: true },
     });
 
-    if (stationStatus && stationStatus.availableBatteries <= 0) {
+    if (stationStatus && stationStatus.availableBatteries == 0) {
       // デクリメント後に0未満になる場合、エラーレスポンスを返す
       return NextResponse.json({
         status: 400,
