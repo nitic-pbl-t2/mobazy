@@ -15,7 +15,7 @@ datasource db {
 model StationStatus{
   name String  @id  @default("nitic")
   availableBatteries Int @default(3)
-  Ports Int?
+  Ports Int
 }
 
 // 利用履歴画面で使う
