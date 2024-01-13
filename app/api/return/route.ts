@@ -85,8 +85,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     }
 
     // インクリメントした数がポート数を超える場合はエラー
-    const incrementedBatteries = stationStatus.availableBatteries + 1;
-    if (incrementedBatteries > (stationStatus.Ports || 0)) {
+    if (stationStatus.availableBatteries == stationStatus.Ports) {
       return NextResponse.json({
         status: 400,
         message: "ステーションのバッテリーがいっぱいで返却できません。",
@@ -96,7 +95,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     // availableBatteriesをインクリメント
     await prismaClient.stationStatus.update({
       where: { name: "nitic" },
-      data: { availableBatteries: incrementedBatteries },
+      data: { availableBatteries: stationStatus.availableBatteries + 1 },
     });
 
     return NextResponse.json({

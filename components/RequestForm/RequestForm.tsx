@@ -21,9 +21,14 @@ import { useAuth } from "@/Provider/AuthProvider";
 
 const FormSchema = z.object({
   email: z.string(),
-  passcode: z.string().min(2, {
-    message: "2文字より少ないです。",
-  }),
+  passcode: z
+    .string()
+    .min(5, {
+      message: "5桁の数字を入力してください",
+    })
+    .max(5, {
+      message: "5桁の数字を入力してください",
+    }),
 });
 
 type requestFormProps = {
