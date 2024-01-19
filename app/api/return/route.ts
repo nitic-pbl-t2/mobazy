@@ -1,6 +1,9 @@
 import { prismaClient } from "@/utils/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
+// apiでキャッシュを使用しない(?)
+export const dynamic = "force-dynamic";
+
 // ユーティリティ関数: 使用時間を計算して文字列に変換
 function calculateUsageTime(borrowedAt: Date): string {
   const returnedAt = new Date();

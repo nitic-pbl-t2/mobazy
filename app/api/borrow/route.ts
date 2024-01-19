@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prismaClient } from "@/utils/prisma/client";
 
+// apiでキャッシュを使用しない(?)
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest, response: NextResponse) {
   const jsonData = await request.json();
   // console.log("borrow", jsonData);
