@@ -40,6 +40,27 @@ export async function POST(request: NextRequest, response: NextResponse) {
     });
   } else {
     // バッテリーを返す処理
+    // ポート数と availableBatteries を取得
+    const stationStatus = await prismaClient.stationStatus.findUnique({
+      where: { name: "nitic" },
+      select: { availableBatteries: true, Ports: true },
+    });
+
+    if (!stationStatus) {
+      return NextResponse.json({
+        status: 500,
+        message: "ステーションの情報が取得できません。",
+      });
+    }
+
+    // インクリメントした数がポート数を超える場合はエラー
+    if (stationStatus.availableBatteries == stationStatus.Ports) {
+      return NextResponse.json({
+        status: 400,
+        message: "ステーションのバッテリーがいっぱいで返却できません。",
+      });
+    }
+
     const userHistory = await prismaClient.userHistory.findFirst({
       where: {
         email: jsonData.email,
@@ -74,26 +95,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
     });
 
     // 返したので、availableBatteriesをインクリメントする
-    // ポート数と availableBatteries を取得
-    const stationStatus = await prismaClient.stationStatus.findUnique({
-      where: { name: "nitic" },
-      select: { availableBatteries: true, Ports: true },
-    });
-
-    if (!stationStatus) {
-      return NextResponse.json({
-        status: 500,
-        message: "ステーションの情報が取得できません。",
-      });
-    }
-
-    // インクリメントした数がポート数を超える場合はエラー
-    if (stationStatus.availableBatteries == stationStatus.Ports) {
-      return NextResponse.json({
-        status: 400,
-        message: "ステーションのバッテリーがいっぱいで返却できません。",
-      });
-    }
 
     // availableBatteriesをインクリメント
     await prismaClient.stationStatus.update({

@@ -30,6 +30,20 @@ export async function POST(request: NextRequest, response: NextResponse) {
     });
   } else {
     // バッテリーを借りる処理
+    // availableBatteriesをデクリメントする前に、値が0未満になるかどうか確認
+    const stationStatus = await prismaClient.stationStatus.findUnique({
+      where: { name: "nitic" },
+      select: { availableBatteries: true },
+    });
+
+    if (stationStatus && stationStatus.availableBatteries == 0) {
+      // デクリメント後に0未満になる場合、エラーレスポンスを返す
+      return NextResponse.json({
+        status: 400,
+        message: "バッテリーが0なので借りれません。",
+      });
+    }
+
     // リクエストを送ったクライアントが、正規のユーザーであるか確認する❌　← 安全性に問題あるけど面倒臭い
     await prismaClient.userHistory.create({
       data: {
@@ -64,20 +78,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
         data: {
           isBorrowing: true, // isBorrowing を true に設定
         },
-      });
-    }
-
-    // availableBatteriesをデクリメントする前に、値が0未満になるかどうか確認
-    const stationStatus = await prismaClient.stationStatus.findUnique({
-      where: { name: "nitic" },
-      select: { availableBatteries: true },
-    });
-
-    if (stationStatus && stationStatus.availableBatteries == 0) {
-      // デクリメント後に0未満になる場合、エラーレスポンスを返す
-      return NextResponse.json({
-        status: 400,
-        message: "バッテリーが0なので借りれません。",
       });
     }
 
