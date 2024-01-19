@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prismaClient } from "@/utils/prisma/client";
 
+// apiでキャッシュを使用しない(?)
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   // リクエストのユーザーが正規であるかチェックする必要ある❌ ← 面倒臭いからやってない
   const userHistories = await prismaClient.userHistory.findMany({

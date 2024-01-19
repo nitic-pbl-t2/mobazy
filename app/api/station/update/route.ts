@@ -1,11 +1,14 @@
 import { prismaClient } from "@/utils/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+// apiでキャッシュを使用しない(?)
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest, response: NextResponse) {
   const requestData = await request.json();
 
   //  この形式のデータを受け取れる
   //   {
-  //     "availableBatteries":2
+  //     "availableBatteries":0 or 1
   //   }
 
   // ステーション名が "nitric" である行を更新
