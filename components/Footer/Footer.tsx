@@ -50,7 +50,7 @@ export const Footer: FC<FooterProps> = (props) => {
         </address>
         <div className="flex text-xs flex-row justify-center leading-none">
           <small className="w-fit rounded-full">
-            Copyright © 2023 茨城工業高等専門学校 後期PBL 1班
+            Copyright © 2023 茨城工業高等専門学校 後期PBL 2班
           </small>
         </div>
       </div>
