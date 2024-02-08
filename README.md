@@ -35,9 +35,3 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-データベースの設定
-stationStatus テーブルには、高専ステーションのデータが入ります。
-name: nitic として他は自由に設定してください。ただし、availableBatteries > Ports は守る。
-
-passcode テーブルには、ワンタイムパスコードが入ります。
-secretKey:1 で、　 passcode に５桁のランダムな数字が入ります。
