@@ -6,6 +6,7 @@ import { Header } from "@/components/Header/Header";
 import { Footer } from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/Provider/AuthProvider";
+import { Analytics } from "@vercel/analytics/react";
 
 type RootLayoutProps = {
   children: ReactNode;
@@ -21,6 +22,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
           <main className="min-h-full grow">{children}</main>
           <Footer />
           <Toaster />
+          <Analytics />
         </body>
       </AuthProvider>
     </html>

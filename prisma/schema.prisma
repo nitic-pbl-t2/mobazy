@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,33 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-// ステーションの情報を追加できる
-model StationStatus{
-  name String  @id  @default("nitic")
-  availableBatteries Int @default(3)
-  Ports Int
+model StationStatus {
+  name               String @id @default("nitic")
+  availableBatteries Int    @default(3)
+  Ports              Int
 }
 
-// 利用履歴画面で使う
 model UserHistory {
-  id  Int @id @default(autoincrement())
-  email String 
-  status  String?
-  stationName String @default("茨城高専")
-  port  Int?
-  borrowedAt DateTime? @default(now())
-  returnedAt DateTime? 
-  usageTime  String? 
+  id          Int       @id @default(autoincrement())
+  email       String
+  status      String?
+  stationName String    @default("茨城高専")
+  port        Int?
+  borrowedAt  DateTime? @default(now())
+  returnedAt  DateTime?
+  usageTime   String?
 }
 
-// プロフィール情報を追加できる
-model User{
-  email String @id
-  isBorrowing Boolean 
+model User {
+  email       String  @id
+  isBorrowing Boolean
 }
 
-model Passcode{
+model Passcode {
   secretKey String @id
-  passcode Int
+  passcode  Int
 }

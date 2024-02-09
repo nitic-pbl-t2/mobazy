@@ -11,7 +11,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   //     "availableBatteries":0 or 1
   //   }
 
-  // ステーション名が "nitric" である行を更新
+  // ステーション名が "nitic" である行を更新
   const updatedStationStatus = await prismaClient.stationStatus.update({
     where: { name: "nitic" },
     data: {
